@@ -1,7 +1,2 @@
-import sys
-
-def main() :
-    print(sys.argv[1])
-
-if __name__ == '__main__':
-    main()
+a =[1,23,4,5]
+print(a[:-1])

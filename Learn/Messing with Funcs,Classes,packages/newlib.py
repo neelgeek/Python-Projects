@@ -1,6 +1,6 @@
 class wizard(object):
 
-    spell = "Stupefy"
+    _spell = "Stupefy"
 
     def __init__(self) :
         print("Hello")
@@ -11,4 +11,10 @@ class wizard(object):
         
         print(self.spell)
 
+    def attack(self):
+        temp = wizard._spell
+        print(temp)
 
+
+obj = wizard()
+obj.attack()
