@@ -5,7 +5,8 @@ from matplotlib import style
 import warnings
 from collections import Counter
 style.use('fivethirtyeight')
-
+import pandas as pd
+import random
 
 dataset =  {'k':[[1,2],[2,3],[3,1]],'r':[[6,5],[7,7],[8,6]]}
 new = [4,3]
@@ -27,9 +28,34 @@ def knn(data,predict,k=3):
 
     return vote_result
 
-result = knn(dataset,new,k=3)
-print(result)
+df = pd.read_csv("breast-cancer-wisconsin.data")
+df.replace('?',-99999,inplace=True)
+df.drop(['id'],1,inplace=True)
+full_data =  df.astype(float).values.tolist()
+random.shuffle(full_data)
 
-[[plt.scatter(ii[0],ii[1],s=100,color=i ) for ii in dataset[i]] for i in dataset]
-plt.scatter(new[0],new[1],s=100,color=result)
-#plt.show()
+
+test_size = 0.2
+train_set = {2:[],4:[]}
+test_set = {2:[],4:[]}
+train_data = full_data[:-int(test_size*len(full_data))]
+test_data = full_data[-int(test_size*len(full_data)):]
+
+for i in train_data:
+    train_set[i[-1]].append(i[:-1])
+
+
+for i in test_data:
+    test_set[i[-1]].append(i[:-1])
+
+correct =0
+total =0
+
+for group in test_set:
+    for data in test_set[group]:
+        vote = knn(train_set,data,k=5)
+        if group == vote:
+            correct+=1
+        total+=1
+
+print('Accuracy: ',correct/total)
